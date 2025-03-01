@@ -479,3 +479,60 @@
         <div id="close-button" style="position: absolute; top: -10px; right: -10px; font-weight: bold; display: none; justify-content: center; align-items: center; z-index: 2147483643; width: 22px; height: 22px; border-radius: 50%; text-align: center; font-size: 12px; cursor: pointer; background-color: rgb(224, 224, 224); color: black; box-shadow: rgba(150, 150, 150, 0.15) 0px 6px 24px 0px, rgba(150, 150, 150, 0.15) 0px 0px 0px 1px;">✕</div>
     </div>
 </div>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var messageBubble = document.querySelector("#chatbase-message-bubbles");
+        var closeButton = document.querySelector("#close-button");
+
+        messageBubble.addEventListener("mouseover", function() {
+            closeButton.style.display = "flex";
+        });
+
+        messageBubble.addEventListener("mouseout", function() {
+            closeButton.style.display = "none";
+        });
+
+        closeButton.addEventListener("click", function() {
+            console.log("Close button clicked");
+            messageBubble.style.display = "none";
+        });
+
+        var chatbotButton = document.querySelector("#rendering-information");
+       
+        if (chatbotButton) {
+            console.log("Chatbot button found");
+            chatbotButton.addEventListener("click", function() {
+                console.log("Chatbot button clicked");
+                messageBubble.style.display = "none";
+            });
+        } else {
+            console.log("Chatbot button not found");
+        }
+
+        var iframe = document.querySelector('#rendering-information iframe');
+        if (iframe) {
+            iframe.addEventListener('load', function() {
+                console.log("Iframe loaded");
+                iframe.contentWindow.addEventListener('click', function() {
+                    console.log("Iframe content clicked");
+                    messageBubble.style.display = 'none';
+                });
+            });
+        } else {
+            console.log("Iframe not found");
+        }
+
+        // Prevent the chatbox from closing when clicking inside the chatbox
+        messageBubble.addEventListener('click', function(event) {
+            event.stopPropagation();
+        });
+
+        // Close the chatbox when clicking outside of it
+        document.addEventListener('click', function(event) {
+            if (!messageBubble.contains(event.target) && !chatbotButton.contains(event.target)) {
+                messageBubble.style.display = 'none';
+            }
+        });
+    });
+</script>
